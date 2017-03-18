@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "\n\n## Bootstrap\n## Minimum risk investment - Section 5.2\n\nalpha = function(x,y) {\n  # Var is variance. Variance is basically \n  # risk of investment here\n  vx = var(x)\n  vy = var(y)\n  cxy=cov(x,y)\n  (vy-cxy)/(vx+vy-2*cxy)\n}\n\nalpha(Portfolio$X,Portfolio$Y)\n\n# Standard Error of alpha\n\n# We need a little wrapper in order for Bootstrap\n# to work.\n# It takes a data.frame, index from data.frame, \n# and computes alpha.\n# Index is 1:n\nalpha.fn = function(data, index) {\n  with(data[index,],alpha(X,Y))\n}\nalpha.fn(Portfolio,1:100)\n\nset.seed(1)\nalpha.fn(Portfolio,sample(1:100,100,replace=TRUE))\n\nboot.out=boot(Portfolio, alpha.fn, R=1000)\nboot.out\nplot(boot.out)\n",
+    "created" : 1487361773033.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "396266556",
+    "id" : "9F46CA49",
+    "lastKnownWriteTime" : 1487362714,
+    "last_content_update" : 1487362714304,
+    "path" : "C:/Users/User/Desktop/winter/harvard statistics/rstudio/ch5_resampling/bootstrap.R",
+    "project_path" : "bootstrap.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

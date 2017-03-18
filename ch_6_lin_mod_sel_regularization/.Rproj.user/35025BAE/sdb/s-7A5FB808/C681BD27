@@ -1,0 +1,21 @@
+{
+    "collab_server" : "",
+    "contents" : "library(ISLR)\nfix(Hitters)\nnames(Hitters)\ndim(Hitters)\n\n# 59 salaries are missing. Let's remove them.\nsum(is.na(Hitters$Salary))\n\n# Omitting the N/As in the data.\nHitters <- na.omit(Hitters)\ndim(Hitters)\nsum(is.na(Hitters$Salary))\n\n# Let's use regsubsets() (function to identify the best model)\nlibrary(leaps)\nregfit.full <- regsubsets(Salary~., Hitters)\n\n# Asterisk means that a given variable is included in the model\n# regsubsets reports only the best 8-variable models.\nsummary(regfit.full)\n\n# Fit up to 19-variable model\nregfit.full <- regsubsets(Salary~., data=Hitters, nvmax=19)\nreg.summary <- summary(regfit.full)\nnames(reg.summary)\n\nsummary(reg.summary)\n\nreg.summary$rsq\n\n# Plot RSS, adjusted R^2, Mallow's Cp, and BIC\npar(mfrow=c(2,2))\nplot(reg.summary$rss, xlab=\"Number of variables\", ylab=\"RSS\",\n     type=\"l\")\nplot(reg.summary$adjr2, xlab=\"number of variables\", ylab=\"Adjusted RSq\",\n     type=\"l\")\n\n# which.max() to identify the location of maximum point of a vector\nwhich.max(reg.summary$adjr2)\n# print a point on already created plot\npoints(11, reg.summary$adjr2[11], col=\"red\", cex=2, pch=20)\n\n# let's plot Cp and BIC\nplot(reg.summary$cp, xlab=\"Number of variables\", ylab=\"Cp\",\n     type=\"l\")\n# which.min() is to find the location of the minimum point of vector\nwhich.min(reg.summary$cp)\n# print a point on a plot\npoints(10, reg.summary$cp[10], col=\"red\", cex=2, pch=20)\n\n# BIC\nplot(reg.summary$bic, xlab=\"Number of variables\", ylab=\"BIC\",\n     type=\"l\")\nwhich.min(reg.summary$bic)\n# print a min point\npoints(6, reg.summary$bic[6], col=\"red\", cex=2, pch=20)\n\n# plot() of 'leaps' library\nplot(regfit.full, scale=\"r2\")\nplot(regfit.full, scale=\"adjr2\")\nplot(regfit.full, scale=\"Cp\")\nplot(regfit.full, scale=\"bic\")\n\ncoef(regfit.full, 6)\n\n\n## FORWARD AND BACKWARD STEPWISE SELECTION\nregfit.fwd <- regsubsets(Salary~., data=Hitters, nvmax=19,\n                         method=\"forward\")\nsummary(regfit.fwd)\nregfit.bwd <- regsubsets(Salary~., data=Hitters, nvmax=19,\n                         method=\"backward\")\nsummary(regfit.bwd)\n\ncoef(regfit.fwd, 5)\ncoef(regfit.bwd, 5)\n",
+    "created" : 1489777754669.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2819751432",
+    "id" : "C681BD27",
+    "lastKnownWriteTime" : 1489855952,
+    "last_content_update" : 1489856508891,
+    "path" : "C:/Users/User/Desktop/winter/harvard statistics/rstudio/ch_6_lin_mod_sel_regularization/best_subset.R",
+    "project_path" : "best_subset.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
