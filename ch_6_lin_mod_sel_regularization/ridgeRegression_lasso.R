@@ -59,3 +59,22 @@ mean((ridge.pred - y.test)^2)
 out <- glmnet(x,y,alpha=0)
 predict(out,type="coefficients",s=best_lambda)[1:20,]
 # no coefficients are zero => no variable selection is performed.
+
+## The Lasso
+lasso.mod <- glmnet(x[train,], y[train], alpha=1, lambda=grid)
+plot(lasso.mod)
+
+# let's perform cross-validation ...
+set.seed(1)
+cv.out <- cv.glmnet(x[train,], y[train], alpha=1)
+plot(cv.out)
+best_lambda <- cv.out$lambda.min
+lasso.pred <- predict(lasso.mod, s=best_lambda, newx=x[test,])
+mean((lasso.pred-y.test)^2)
+
+out <- glmnet(x,y,alpha=1,lambda=grid)
+lasso.coef <- predict(out, type="coefficients", s=best_lambda)[1:20,]
+lasso.coef
+
+# take without zero coeffs
+lasso.coef[lasso.coef != 0]
